@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { AnimatedImage } from "@/components/ui/animated-image"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface Volume {
   size: string
@@ -90,27 +91,27 @@ export function PerfumeCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link href={`/perfume/${id}`} className="block">
-        <div className="relative h-64 w-full overflow-hidden">
-          <AnimatedImage
-            src={images.main || "/placeholder.svg"}
+        <div className="relative h-64 w-full overflow-hidden bg-gray-100">
+          {/* Asegúrate de que el contenedor tenga un tamaño definido */}
+          <Image
+            src={images.main} // Asegúrate de que `images.main` tenga un valor válido
             alt={name}
-            fill
-            animationDelay={delay}
-            className={cn(
-              "object-contain transition-transform duration-700 ease-out",
-              isHovered ? "scale-110" : "scale-100",
-            )}
-            unoptimized={true} // Establecer unoptimized a true para todas las imágenes
+            layout="fill" // Usa layout="fill" para que la imagen ocupe todo el contenedor
+            className="object-cover" // Ajusta la imagen para que se adapte al contenedor
+            unoptimized={true} // Establecer unoptimized a true para imágenes locales
+            onLoadingComplete={() => {
+              console.log(`Imagen cargada: ${images.main}`); // Depuración
+            }}
           />
-          <div className="absolute top-2 left-2 flex flex-col gap-2">
-            {featured && <Badge className="bg-decant-blue text-white opacity-90">Destacado</Badge>}
-            {isNew && <Badge className="bg-decant-gold text-white opacity-90">Nuevo</Badge>}
-          </div>
-          <div className="absolute top-2 right-2">
-            <Badge variant="outline" className="bg-white/80 backdrop-blur-sm text-decant-blue">
-              {category}
-            </Badge>
-          </div>
+        </div>
+        <div className="absolute top-2 left-2 flex flex-col gap-2">
+          {featured && <Badge className="bg-decant-blue text-white opacity-90">Destacado</Badge>}
+          {isNew && <Badge className="bg-decant-gold text-white opacity-90">Nuevo</Badge>}
+        </div>
+        <div className="absolute top-2 right-2">
+          <Badge variant="outline" className="bg-white/80 backdrop-blur-sm text-decant-blue">
+            {category}
+          </Badge>
         </div>
       </Link>
       <div className="p-4">
@@ -201,4 +202,5 @@ export function PerfumeCard({
     </div>
   )
 }
+
 
