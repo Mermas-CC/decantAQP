@@ -45,12 +45,12 @@ interface PerfumeClientProps {
 }
 
 export default function PerfumeClient({ perfume, relatedPerfumes, images }: PerfumeClientProps) {
-  const [activeImage, setActiveImage] = useState<string | null>(null)
+  const [activeImage, setActiveImage] = useState<string>(perfume.images.main || images[0]); // Asegúrate de que tenga un valor inicial válido
   const [quantity, setQuantity] = useState(1)
   const [selectedVolume, setSelectedVolume] = useState<string | null>(null)
 
   // WhatsApp contact info
-  const whatsappNumber = "+51961316339" // Número de WhatsApp actualizado
+  const whatsappNumber = "+51961316339" // Reemplazar con el número real
   const whatsappMessage = `Hola, estoy interesado en el perfume ${perfume.name} de ${perfume.brand}. ¿Podrían darme más información?`
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`
 
@@ -112,7 +112,7 @@ export default function PerfumeClient({ perfume, relatedPerfumes, images }: Perf
               <MessageCircle className="h-4 w-4" />
               WhatsApp
             </a>
-            <a href="tel:+51999999999" className="flex items-center gap-2 text-sm font-medium">
+            <a href="tel:+51961316339" className="flex items-center gap-2 text-sm font-medium">
               <Phone className="h-4 w-4" />
               <span className="hidden md:inline">+51 999 999 999</span>
             </a>
@@ -162,25 +162,28 @@ export default function PerfumeClient({ perfume, relatedPerfumes, images }: Perf
             {/* Product Images */}
             <ScrollReveal direction="left">
               <div className="space-y-4">
+                {/* Imagen activa */}
                 <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-100 shadow-md transition-all duration-500">
-                  <AnimatedImage
-                    src={activeImage || images[0]}
+                  <Image
+                    src={activeImage} // Usa la imagen activa
                     alt={perfume.name}
                     fill
-                    className="object-contain"
+                    className="object-contain" // Asegúrate de que la imagen se ajuste correctamente
                     unoptimized={true} // Establecer unoptimized a true
                   />
                 </div>
+
+                {/* Miniaturas */}
                 <div className="grid grid-cols-4 gap-2">
                   {images.map((image, i) => (
                     <div
                       key={i}
                       className={`relative aspect-square overflow-hidden rounded-lg border cursor-pointer transition-all duration-300 ${
-                        (activeImage || images[0]) === image
+                        activeImage === image
                           ? "border-decant-blue"
                           : "border-gray-200 hover:border-decant-blue"
                       }`}
-                      onClick={() => setActiveImage(image)}
+                      onClick={() => setActiveImage(image)} // Actualiza la imagen activa al hacer clic
                     >
                       <Image
                         src={image || "/placeholder.svg"}
@@ -477,4 +480,5 @@ export default function PerfumeClient({ perfume, relatedPerfumes, images }: Perf
     </div>
   )
 }
+
 

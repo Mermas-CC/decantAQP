@@ -25,3 +25,4 @@ export default function PerfumePage({ params }: { params: PageParams }) {
   return <PerfumeClient perfume={perfume} relatedPerfumes={relatedPerfumes} images={images} />
 }
 
+
